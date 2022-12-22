@@ -29,5 +29,23 @@ class RequestRep {
       console.log("====================================getProducts");
     }
   }
+  async postOrder(payload) {
+    try {
+      const response = await BrikApi({
+        method: "post",
+        url: `/order`,
+        data: payload,
+      });
+      const product = await this.getProducts({ page: 1 });
+      return {
+        data: response.data,
+        product,
+      };
+    } catch (error) {
+      console.log("====================================");
+      console.log(error);
+      console.log("====================================postOrder");
+    }
+  }
 }
 export default new RequestRep();

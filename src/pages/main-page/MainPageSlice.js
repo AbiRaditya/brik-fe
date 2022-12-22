@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getProductsData } from "../../repository/AsyncThunk";
+import { getProductsData, postCreateOrder } from "../../repository/AsyncThunk";
 
 const initialState = {
   products: [],
@@ -10,12 +10,19 @@ const initialState = {
   totalCount: 0,
   cart: [],
   cartCount: 0,
+  isOrderLoading: false,
+  isCartModalOpen: false,
+  isSnackBarOpen: false,
+  snackBarMessage: ``,
 };
 
 export const MainPageSlice = createSlice({
   name: "mainPage",
   initialState,
   reducers: {
+    setIsCartModalOpen: (state, { payload }) => {
+      state.isCartModalOpen = payload;
+    },
     setProductSize: (state, { payload }) => {
       state.limit = payload;
     },
@@ -50,6 +57,9 @@ export const MainPageSlice = createSlice({
       state.cart = [];
       state.cartCount = 0;
     },
+    setSnackBar: (state, { payload }) => {
+      state.isSnackBarOpen = payload;
+    },
   },
   extraReducers: {
     [getProductsData.pending]: (state) => {
@@ -64,9 +74,37 @@ export const MainPageSlice = createSlice({
     [getProductsData.rejected]: (state) => {
       state.isLoading = false;
     },
+    [postCreateOrder.pending]: (state) => {
+      state.isOrderLoading = true;
+    },
+    [postCreateOrder.fulfilled]: (state, { payload }) => {
+      state.isOrderLoading = false;
+
+      state.totalCount = payload.product.totalCount;
+      state.products = payload.product.data;
+      state.maxPage = Math.ceil(+payload.product.totalCount / state.limit);
+
+      state.cart = [];
+      state.cartCount = 0;
+      state.isCartModalOpen = false;
+      state.isSnackBarOpen = true;
+      state.snackBarMessage = `Order created successfully`;
+      setTimeout(() => {
+        state.snackBarMessage = ``;
+      }, 2000);
+    },
+    [postCreateOrder.rejected]: (state) => {
+      state.isOrderLoading = false;
+    },
   },
 });
 
-export const { setProductSize, setPage, addItemsTocart, removeAnItemFromCart } =
-  MainPageSlice.actions;
+export const {
+  setIsCartModalOpen,
+  setProductSize,
+  setPage,
+  addItemsTocart,
+  removeAnItemFromCart,
+  setSnackBar,
+} = MainPageSlice.actions;
 export default MainPageSlice.reducer;
