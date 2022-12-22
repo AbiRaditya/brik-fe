@@ -3,12 +3,19 @@ import UseGetProduct from "../../custom-hooks/UseGetProduct";
 import { useDispatch, useSelector } from "react-redux";
 import ProductPagination from "../../components/product-pagination/ProductPagination";
 import ModalService from "../../service/ModalService";
-import { setModal, setDialog, setSnackBar } from "./AdminPageSlice";
+import {
+  setModal,
+  setDialog,
+  setSnackBar,
+  setAddModal,
+} from "./AdminPageSlice";
 import EditContent from "../../components/edit-content/EditContent";
 import ConfirmDialog from "../../components/confirmation-dialog/ConfirmDialog";
-
+import IconButton from "@mui/material/IconButton";
+import { AddBox } from "@mui/icons-material";
 import { deleteProduct } from "../../repository/AsyncThunk";
 import Snackbar from "@mui/material/Snackbar";
+import AddContent from "../../components/add-content/AddContent";
 
 const AdminPage = () => {
   const dispatch = useDispatch();
@@ -19,6 +26,7 @@ const AdminPage = () => {
   );
   const maxPage = useSelector((state) => state.mainpage.maxPage);
   const isModalOpen = useSelector((state) => state.adminpage.isEditModalOpen);
+  const isAddModalOpen = useSelector((state) => state.adminpage.isAddModalOpen);
   const isDialogOpen = useSelector((state) => state.adminpage.isDialogOpen);
   const snackBarMessage = useSelector(
     (state) => state.adminpage.snackBarMessage
@@ -43,10 +51,13 @@ const AdminPage = () => {
   function componentFunction(Component) {
     return (props) => <Component {...props} />;
   }
-  const ModalContent = componentFunction(EditContent);
-  const ModalEdit = componentFunction(ModalService);
+  const ModalContentEdit = componentFunction(EditContent);
+  const ModalProduct = componentFunction(ModalService);
   const handleClose = () => {
     dispatch(setModal(false));
+  };
+  const handleCloseAddModal = () => {
+    dispatch(setAddModal(false));
   };
   const handleOpenModal = (product) => {
     productData.current = product;
@@ -84,15 +95,29 @@ const AdminPage = () => {
         isLoading={isLoadingDelete}
         handleDelete={handleDelete}
       />
-      <ModalEdit
+      <ModalProduct
         isModalOpen={isModalOpen}
         closeModal={handleClose}
         modalTitle={"Edit product"}
       >
-        <ModalContent productData={productData.current}></ModalContent>
-      </ModalEdit>
+        <ModalContentEdit productData={productData.current}></ModalContentEdit>
+      </ModalProduct>
+      <ModalProduct
+        isModalOpen={isAddModalOpen}
+        closeModal={handleCloseAddModal}
+        modalTitle={"Add product"}
+      >
+        <AddContent></AddContent>
+      </ModalProduct>
       <div className="mainpage-header">
         <h1>Admin</h1>
+        <IconButton
+          onClick={() => {
+            dispatch(setAddModal(true));
+          }}
+        >
+          <AddBox></AddBox>
+        </IconButton>
       </div>
       <ProductPagination
         isAdmin={true}

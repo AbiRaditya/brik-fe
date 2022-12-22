@@ -21,7 +21,12 @@ const ProductData = ({
   return (
     <div className="product-card">
       <div className="image-container">
-        <img src={image_url} alt={name} className="product-image" />
+        {image_url ? (
+          <img src={image_url} alt={name} className="product-image" />
+        ) : (
+          <div className="image-placeholder"></div>
+        )}
+
         <p className="product-price">{price ? `$ ${price}` : null}</p>
         {isAdmin ? (
           <div className="edit-product-button">

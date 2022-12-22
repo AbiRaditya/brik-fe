@@ -3,6 +3,8 @@ import {
   getProductsData,
   postCreateOrder,
   deleteProduct,
+  postProduct,
+  editProduct,
 } from "../../repository/AsyncThunk";
 
 const initialState = {
@@ -101,6 +103,16 @@ export const MainPageSlice = createSlice({
       state.isOrderLoading = false;
     },
     [deleteProduct.fulfilled]: (state, { payload }) => {
+      state.totalCount = payload.product.totalCount;
+      state.products = payload.product.data;
+      state.maxPage = Math.ceil(+payload.product.totalCount / state.limit);
+    },
+    [postProduct.fulfilled]: (state, { payload }) => {
+      state.totalCount = payload.product.totalCount;
+      state.products = payload.product.data;
+      state.maxPage = Math.ceil(+payload.product.totalCount / state.limit);
+    },
+    [editProduct.fulfilled]: (state, { payload }) => {
       state.totalCount = payload.product.totalCount;
       state.products = payload.product.data;
       state.maxPage = Math.ceil(+payload.product.totalCount / state.limit);
