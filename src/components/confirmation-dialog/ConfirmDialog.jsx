@@ -5,6 +5,7 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import Button from "@mui/material/Button";
+import LoadingButton from "@mui/lab/LoadingButton";
 
 const ConfirmDialog = ({
   isLoading,
@@ -21,14 +22,12 @@ const ConfirmDialog = ({
         </DialogContentText>
       </DialogContent>
       <DialogActions>
-        {isLoading ? (
-          "loading"
-        ) : (
-          <>
-            <Button onClick={handleClose}>Cancel</Button>
-            <Button onClick={handleDelete}>Confirm</Button>
-          </>
-        )}
+        <LoadingButton loading={isLoading} onClick={handleClose}>
+          Cancel
+        </LoadingButton>
+        <LoadingButton loading={isLoading} onClick={handleDelete}>
+          Confirm
+        </LoadingButton>
       </DialogActions>
     </Dialog>
   );

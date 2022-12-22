@@ -42,7 +42,7 @@ const ProductData = ({
             </IconButton>
             <IconButton
               onClick={() => {
-                handleDelete({ id });
+                handleDelete(id);
               }}
             >
               <Delete></Delete>

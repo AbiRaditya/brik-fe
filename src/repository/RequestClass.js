@@ -1,3 +1,4 @@
+import { deleteProduct } from "./AsyncThunk";
 import BrikApi from "./BrikApi";
 
 class RequestRep {
@@ -44,6 +45,24 @@ class RequestRep {
       console.log("====================================");
       console.log(error);
       console.log("====================================postOrder");
+    }
+  }
+
+  async deleteProduct(id) {
+    try {
+      const response = await BrikApi({
+        method: "delete",
+        url: `/product/${id}`,
+      });
+      const product = await this.getProducts({ page: 1, showAll: true });
+      return {
+        data: response.data,
+        product,
+      };
+    } catch (error) {
+      console.log("====================================");
+      console.log(error);
+      console.log("====================================deleteProduct", id);
     }
   }
 }

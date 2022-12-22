@@ -3,21 +3,35 @@ import UseGetProduct from "../../custom-hooks/UseGetProduct";
 import { useDispatch, useSelector } from "react-redux";
 import ProductPagination from "../../components/product-pagination/ProductPagination";
 import ModalService from "../../service/ModalService";
-import { setModal } from "./AdminPageSlice";
+import { setModal, setDialog, setSnackBar } from "./AdminPageSlice";
 import EditContent from "../../components/edit-content/EditContent";
 import ConfirmDialog from "../../components/confirmation-dialog/ConfirmDialog";
-import { setDialog } from "./AdminPageSlice";
+
+import { deleteProduct } from "../../repository/AsyncThunk";
+import Snackbar from "@mui/material/Snackbar";
+
 const AdminPage = () => {
   const dispatch = useDispatch();
   const size = useSelector((state) => state.mainpage.limit);
   const isLoading = useSelector((state) => state.mainpage.isLoading);
+  const isLoadingDelete = useSelector(
+    (state) => state.adminpage.isLoadingDelete
+  );
   const maxPage = useSelector((state) => state.mainpage.maxPage);
   const isModalOpen = useSelector((state) => state.adminpage.isEditModalOpen);
   const isDialogOpen = useSelector((state) => state.adminpage.isDialogOpen);
+  const snackBarMessage = useSelector(
+    (state) => state.adminpage.snackBarMessage
+  );
+  const isSnackBarOpen = useSelector((state) => state.adminpage.isSnackBarOpen);
+
   const [page, setPage] = useState(1);
 
   const handlePageChange = (e, page) => {
     setPage(page);
+  };
+  const handleSnackClose = () => {
+    dispatch(setSnackBar(false));
   };
   const [products] = UseGetProduct({
     page: page,
@@ -25,6 +39,7 @@ const AdminPage = () => {
     showAll: true,
   });
   const productData = useRef(null);
+  const deleteId = useRef(null);
   function componentFunction(Component) {
     return (props) => <Component {...props} />;
   }
@@ -40,12 +55,35 @@ const AdminPage = () => {
   const handleCloseDialog = () => {
     dispatch(setDialog(false));
   };
-  const handleOpenDialog = () => {
+  const handleOpenDialog = (id) => {
+    deleteId.current = id;
+
     dispatch(setDialog(true));
+  };
+  const handleDelete = (product) => {
+    // console.log(product, "product");
+    const productId = deleteId.current;
+    if (!productId) {
+      return;
+    }
+
+    dispatch(deleteProduct(productId));
+    deleteId.current = null;
   };
   return (
     <div className="container">
-      <ConfirmDialog open={isDialogOpen} handleClose={handleCloseDialog} />
+      <Snackbar
+        open={isSnackBarOpen}
+        autoHideDuration={4000}
+        onClose={handleSnackClose}
+        message={snackBarMessage}
+      />
+      <ConfirmDialog
+        open={isDialogOpen}
+        handleClose={handleCloseDialog}
+        isLoading={isLoadingDelete}
+        handleDelete={handleDelete}
+      />
       <ModalEdit
         isModalOpen={isModalOpen}
         closeModal={handleClose}

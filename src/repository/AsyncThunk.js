@@ -38,7 +38,21 @@ export const postCreateOrder = createAsyncThunk(
       const response = await RequestClass.postOrder(payload);
       return response;
     } catch (error) {
-      console.log(error, "error createAsyncThunk getProductsData");
+      console.log(error, "error createAsyncThunk postCreateOrder");
+      rejectWithValue(error);
+    }
+  }
+);
+
+export const deleteProduct = createAsyncThunk(
+  `deleteProduct/del`,
+  async (id, { rejectWithValue }) => {
+    try {
+      const response = await RequestClass.deleteProduct(id);
+
+      return response;
+    } catch (error) {
+      console.log(error, "error createAsyncThunk deleteProduct");
       rejectWithValue(error);
     }
   }

@@ -1,5 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getProductsData, postCreateOrder } from "../../repository/AsyncThunk";
+import {
+  getProductsData,
+  postCreateOrder,
+  deleteProduct,
+} from "../../repository/AsyncThunk";
 
 const initialState = {
   products: [],
@@ -95,6 +99,11 @@ export const MainPageSlice = createSlice({
     },
     [postCreateOrder.rejected]: (state) => {
       state.isOrderLoading = false;
+    },
+    [deleteProduct.fulfilled]: (state, { payload }) => {
+      state.totalCount = payload.product.totalCount;
+      state.products = payload.product.data;
+      state.maxPage = Math.ceil(+payload.product.totalCount / state.limit);
     },
   },
 });
