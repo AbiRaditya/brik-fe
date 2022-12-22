@@ -44,9 +44,7 @@ const MainPage = () => {
   const handleSnackClose = () => {
     dispatch(setSnackBar(false));
   };
-  const handleSnackOpen = () => {
-    dispatch(setSnackBar(true));
-  };
+
   const handleClose = () => {
     dispatch(setIsCartModalOpen(false));
   };
