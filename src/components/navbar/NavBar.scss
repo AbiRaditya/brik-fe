@@ -1,0 +1,27 @@
+#navigation-bar {
+  display: flex;
+  justify-content: space-around;
+  padding: 40px 0;
+  color: #646464 !important;
+  a {
+    font-family: "Poppins";
+    font-style: normal;
+    font-weight: 500;
+    font-size: 20px;
+    text-decoration: none;
+  }
+  button {
+    border: none;
+    background: #00a2fa;
+    color: white;
+    border-radius: 5px;
+    padding: 10px 15px;
+  }
+  .active {
+    color: black;
+  }
+  a:hover {
+    color: black;
+    filter: drop-shadow(0 0 10px rgb(17, 1, 230));
+  }
+}

@@ -1,50 +1,44 @@
 import React, { useState } from "react";
 import "./ProductData.scss";
+import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
+import IconButton from "@mui/material/IconButton";
 
-// const ProductData = ({ product }) => {
-//   return (
-//     <div className="product-card">
-//       <img
-//         src={product.image_url}
-//         alt={product.name}
-//         className="product-image"
-//       />
-//       <h2 className="product-name">{product.name}</h2>
-//       <p className="product-description">{product.description}</p>
-//       <p className="product-price">${product.price}</p>
-//     </div>
-//   );
-// };
-const ProductData = () => {
+import { addItemsTocart } from "../../pages/main-page/MainPageSlice";
+import { useSelector, useDispatch } from "react-redux";
+
+const ProductData = ({ id, price, name, stock, description, image_url }) => {
+  const dispatch = useDispatch();
+  const cart = useSelector((state) => state.mainpage.cart);
   const [isDescriptionOpen, setIsDescriptionOpen] = useState(false);
 
-  //   return (
-  //     <div className="product-card">
-  //       <img
-  // src="https://www.w3schools.com/html/pic_trulli.jpg"
-  // alt="product.name"
-  //         className="product-image"
-  //       />
-  //       <h2 className="product-name">product.name</h2>
-  //       <p className="product-description">
-  // orem Ipsum is simply dummy text of the printing and typesetting
-  // industry. Lorem Ipsum has been the industry's standard dummy text ever
-  // since the 1500s, when an unknown printer took a galley of type and
-  // scrambled it to make a type specimen book.
-  //       </p>
-  //       <p className="product-price">$4000</p>
-  //     </div>
-  //   );
+  function addItem(product) {
+    console.log(product, "product");
+    dispatch(addItemsTocart(product));
+  }
+
   return (
     <div className="product-card">
-      <img
-        src="https://www.w3schools.com/html/pic_trulli.jpg"
-        alt="product.name"
-        className="product-image"
-      />
+      <div className="image-container">
+        <img src={image_url} alt={name} className="product-image" />
+        <p className="product-price">$ {price}</p>
+      </div>
       <div className="product-info">
-        <h2 className="product-name">product.name</h2>
-        <p className="product-price">$400</p>
+        <h2 className="product-name">{name}</h2>
+        <div className="stock-cart">
+          {stock ? (
+            <IconButton
+              aria-label="add product to cart"
+              onClick={() => {
+                addItem({ id, price, name, stock, description, image_url });
+              }}
+            >
+              <AddShoppingCartIcon></AddShoppingCartIcon>
+            </IconButton>
+          ) : (
+            ""
+          )}
+          <p className="product-stock">{stock} in stock</p>
+        </div>
       </div>
       <a
         className="toggle-description-link"
@@ -57,12 +51,7 @@ const ProductData = () => {
       </a>
       {isDescriptionOpen && (
         <div className="product-description">
-          <p>
-            Lorem Ipsum is simply dummy text of the printing and typesetting
-            industry. Lorem Ipsum has been the industry's standard dummy text
-            ever since the 1500s, when an unknown printer took a galley of type
-            and scrambled it to make a type specimen book.
-          </p>
+          <p>{description}</p>
         </div>
       )}
     </div>
