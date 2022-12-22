@@ -20,3 +20,26 @@ export const getProductsData = createAsyncThunk(
     }
   }
 );
+
+export const postCreateOrder = createAsyncThunk(
+  `postCreateOrder/post`,
+  async ({ cart, customerData }, { rejectWithValue }) => {
+    try {
+      const products = cart.map((product) => {
+        return {
+          id: +product.id,
+          stock: +product.count,
+        };
+      });
+      const payload = {
+        customerData,
+        products,
+      };
+      const response = await RequestClass.postOrder(payload);
+      return response;
+    } catch (error) {
+      console.log(error, "error createAsyncThunk getProductsData");
+      rejectWithValue(error);
+    }
+  }
+);

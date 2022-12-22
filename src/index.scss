@@ -186,3 +186,9 @@ button:focus-visible {
 .cart-product-info {
   display: flex;
 }
+.empty-cart {
+  display: grid;
+  div {
+    place-self: center;
+  }
+}
