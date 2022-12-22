@@ -6,14 +6,13 @@ class RequestRep {
       const params = {
         page,
         limit,
-        showAll: true,
       };
       if (search) {
         params.search = search;
       }
-      // if (showAll) {
-      //   params.showAll = showAll;
-      // }
+      if (showAll) {
+        params.showAll = showAll;
+      }
       const response = await BrikApi({
         url: `/product`,
         method: `get`,

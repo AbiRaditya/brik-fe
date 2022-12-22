@@ -11,7 +11,7 @@ import MenuItem from "@mui/material/MenuItem";
 import InputLabel from "@mui/material/InputLabel";
 import FormControl from "@mui/material/FormControl";
 
-import { postCreateOrder, getProductsData } from "../../repository/AsyncThunk";
+import { postCreateOrder } from "../../repository/AsyncThunk";
 import { useDispatch, useSelector } from "react-redux";
 
 const CustomerDialog = ({ open, handleClose }) => {
@@ -83,7 +83,7 @@ const CustomerDialog = ({ open, handleClose }) => {
           margin="dense"
           id="name"
           label="Name"
-          type="email"
+          type="text"
           fullWidth
           variant="standard"
           helperText={isError ? "Name must be filled" : ""}
