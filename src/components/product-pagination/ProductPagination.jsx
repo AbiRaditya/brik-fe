@@ -1,13 +1,22 @@
 import React from "react";
 import { Pagination } from "@mui/material";
 import ProductData from "../ProductCard/ProductCard";
+import { addItemsTocart } from "../../pages/main-page/MainPageSlice";
+import { useDispatch } from "react-redux";
 
 const ProductPagination = ({
+  isAdmin,
   products,
   isLoading,
   maxPage,
   handlePageChange,
+  handleEditModal,
+  handleDialog,
 }) => {
+  const dispatch = useDispatch();
+  function addItem(product) {
+    dispatch(addItemsTocart(product));
+  }
   return (
     <>
       <Pagination count={maxPage} onChange={handlePageChange} />
@@ -22,6 +31,7 @@ const ProductPagination = ({
         ) : products.length ? (
           products.map((product) => (
             <ProductData
+              isAdmin={isAdmin}
               id={product.id}
               price={product.price}
               name={product.name}
@@ -29,6 +39,9 @@ const ProductPagination = ({
               description={product.description}
               image_url={product.image_url}
               key={product.id}
+              handleEditModal={handleEditModal}
+              addItem={addItem}
+              handleDelete={handleDialog}
             />
           ))
         ) : (

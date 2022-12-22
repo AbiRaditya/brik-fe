@@ -1,11 +1,9 @@
 import React, { useState } from "react";
-import ProductData from "../../components/ProductCard/ProductCard";
 import UseGetProduct from "../../custom-hooks/UseGetProduct";
 import { useDispatch, useSelector } from "react-redux";
 import "./MainPage.scss";
-import { Pagination } from "@mui/material";
 import { setPage, setSnackBar, setIsCartModalOpen } from "./MainPageSlice";
-import { ShoppingCart, Delete } from "@mui/icons-material";
+import { ShoppingCart } from "@mui/icons-material";
 import Badge from "@mui/material/Badge";
 import IconButton from "@mui/material/IconButton";
 import ModalService from "../../service/ModalService";

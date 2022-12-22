@@ -16,7 +16,7 @@ export const getProductsData = createAsyncThunk(
       return response;
     } catch (error) {
       console.log(error, "error createAsyncThunk getProductsData");
-      rejectWithValue(error);
+      return rejectWithValue(error.response.data);
     }
   }
 );
@@ -38,8 +38,47 @@ export const postCreateOrder = createAsyncThunk(
       const response = await RequestClass.postOrder(payload);
       return response;
     } catch (error) {
-      console.log(error, "error createAsyncThunk getProductsData");
-      rejectWithValue(error);
+      console.log(error, "error createAsyncThunk postCreateOrder");
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
+export const deleteProduct = createAsyncThunk(
+  `deleteProduct/del`,
+  async (id, { rejectWithValue }) => {
+    try {
+      const response = await RequestClass.deleteProduct(id);
+
+      return response;
+    } catch (error) {
+      console.log(error, "error createAsyncThunk deleteProduct");
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
+export const postProduct = createAsyncThunk(
+  `postProduct/post`,
+  async (payload, { rejectWithValue }) => {
+    try {
+      const response = await RequestClass.createProduct(payload);
+      return response;
+    } catch (error) {
+      console.log(error, "error createAsyncThunk postProduct");
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+export const editProduct = createAsyncThunk(
+  `editProduct/put`,
+  async (payload, { rejectWithValue }) => {
+    try {
+      const response = await RequestClass.editProduct(payload);
+      return response;
+    } catch (error) {
+      console.log(error, "error createAsyncThunk editProduct");
+      return rejectWithValue(error.response.data);
     }
   }
 );
